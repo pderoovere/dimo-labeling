@@ -1,4 +1,4 @@
-name: dimo-annotator
+name: dimo-labeling
 channels:
   - defaults
 dependencies:
@@ -14,3 +14,4 @@ dependencies:
       - matplotlib
       - scikit-image
       - flask
+      - flask_cors
