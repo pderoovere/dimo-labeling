@@ -31,7 +31,6 @@ app = Flask(__name__)
 @app.route('/load', methods=['POST'])
 def load():
     # Load dataset
-    _ = json.loads(request.data)
     dataset = ds_loader.load(_path, _args)
     response = jsonify(dataset)
     response.status_code = 200
