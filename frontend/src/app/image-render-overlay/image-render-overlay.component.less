@@ -1,0 +1,36 @@
+.hidden {
+  opacity: 0;
+}
+
+.controls {
+  z-index: 50;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 80%);
+  position: absolute;
+  width: 100%;
+
+  .spacer {
+    width: 40px;
+    display: inline-block;
+  }
+}
+
+.wrapper {
+  outline: none;
+  position: absolute;
+  top: 48px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  > canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.mat-button-toggle {
+  line-height: 32px;
+}
+

@@ -1,0 +1,16 @@
+name: dimo-annotator
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - pip
+  - pip:
+      - imageio
+      - numpy
+      - opencv-contrib-python
+      - pillow
+      - scipy
+      - pyyaml
+      - matplotlib
+      - scikit-image
+      - flask

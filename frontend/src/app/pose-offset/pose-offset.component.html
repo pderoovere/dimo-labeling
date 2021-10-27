@@ -1,0 +1,62 @@
+<div class="wrapper">
+  <div class="row">
+    <mat-form-field>
+      <mat-label>xyz</mat-label>
+      <input matInput type="number" [(ngModel)]="offsetXyz">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <button mat-button (click)="moveXNeg()">
+      -<span class="shortcut"><span class="button">⇧x</span></span>
+    </button>
+    <button mat-button (click)="moveXPos()">
+      +<span class="shortcut"><span class="button">x</span></span>
+    </button>
+  </div>
+  <div class="row">
+    <button mat-button (click)="moveYNeg()">
+      -<span class="shortcut"><span class="button">⇧y</span></span>
+    </button>
+    <button mat-button (click)="moveYPos()">
+      +<span class="shortcut"><span class="button">y</span></span>
+    </button>
+  </div>
+  <div class="row">
+    <button mat-button (click)="moveZNeg()">
+      -<span class="shortcut"><span class="button">⇧z</span></span>
+    </button>
+    <button mat-button (click)="moveZPos()">
+      +<span class="shortcut"><span class="button">z</span></span>
+    </button>
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>wpr</mat-label>
+      <input matInput type="number" [(ngModel)]="offsetWpr">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <button mat-button (click)="moveWNeg()">
+      -<span class="shortcut"><span class="button">⇧w</span></span>
+    </button>
+    <button mat-button (click)="moveWPos()">
+      +<span class="shortcut"><span class="button">w</span></span>
+    </button>
+  </div>
+  <div class="row">
+    <button mat-button (click)="movePNeg()">
+      -<span class="shortcut"><span class="button">⇧p</span></span>
+    </button>
+    <button mat-button (click)="movePPos()">
+      +<span class="shortcut"><span class="button">p</span></span>
+    </button>
+  </div>
+  <div class="row">
+    <button mat-button (click)="moveRNeg()">
+      -<span class="shortcut"><span class="button">⇧r</span></span>
+    </button>
+    <button mat-button (click)="moveRPos()">
+      +<span class="shortcut"><span class="button">r</span></span>
+    </button>
+  </div>
+</div>

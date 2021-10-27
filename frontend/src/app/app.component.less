@@ -1,0 +1,179 @@
+@gray: rgb(169, 169, 174);
+@light-gray: rgb(229, 229, 234);
+@lighter-gray: rgb(239, 239, 244);
+
+.description {
+  min-width: 24px;
+}
+
+.flex-container-row {
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    border: none;
+    border-left: 1px solid @gray;
+
+    &:first-child {
+      border-left: none;
+    }
+  }
+}
+
+.flex-container-column {
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    border: none;
+    border-top: 1px solid @gray;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+}
+
+.wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  .flex-container-row();
+}
+
+.sub-wrapper {
+  > div {
+    border-color: @lighter-gray !important;
+  }
+}
+
+.controls {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.form {
+  padding: 16px;
+
+  > * {
+    margin-top: 8px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  > button, > mat-form-field {
+    width: 120px;
+  }
+}
+
+.stretch {
+  flex-grow: 1;
+  align-items: stretch;
+  position: relative;
+}
+
+.list-section {
+  min-height: 64px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 8px;
+
+  mat-form-field {
+    width: 80px;
+    text-align: right;
+  }
+}
+
+.header {
+  padding: 16px 16px 8px 16px;
+  border-bottom: 1px solid @light-gray;
+
+  label {
+    font-weight: bold;
+  }
+}
+
+.mat-tab-group {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+
+.list {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+
+  mat-selection-list {
+    padding-top: 0;
+    padding-bottom: 64px; // Add space for button below
+    mat-list-option {
+      .option {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.list-button {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 8px 16px 16px 16px;
+}
+
+
+@media screen and (min-width: 1200px) {
+  .visuals {
+    .flex-container-row();
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .visuals {
+    .flex-container-column();
+  }
+}
+
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.red {
+  background-color: red;
+}
+
+.yellow {
+  background-color: yellow;
+}

@@ -1,0 +1,4 @@
+<div class="wrapper">
+  <img [src]="image?.path" #img class="hidden" [width]="image?.width" [height]="image?.height" (load)="refresh()">
+  <app-canvas-viewer (draw)="draw($event)" (clicked)="clicked($event)"></app-canvas-viewer>
+</div>

@@ -1,0 +1,50 @@
+<div class="wrapper">
+  <div class="row">
+    <mat-form-field>
+      <mat-label>x</mat-label>
+      <input matInput [ngModel]="location.x | number:'1.4-4'" type="number" (ngModelChange)="location.x=$event"
+             [ngModelOptions]="{updateOn:'blur'}"
+             (ngModelChange)="emitLocationChanged()">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>y</mat-label>
+      <input matInput [ngModel]="location.y | number:'1.4-4'" type="number" (ngModelChange)="location.y=$event"
+             [ngModelOptions]="{updateOn:'blur'}"
+             (ngModelChange)="emitLocationChanged()">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>z</mat-label>
+      <input matInput [ngModel]="location.z | number:'1.4-4'" type="number" (ngModelChange)="location.z=$event"
+             [ngModelOptions]="{updateOn:'blur'}"
+             (ngModelChange)="emitLocationChanged()">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>w</mat-label>
+      <input matInput [ngModel]="location.w | number:'1.4-4'" type="number" (ngModelChange)="location.w=$event"
+             [ngModelOptions]="{updateOn:'blur'}"
+             (ngModelChange)="emitLocationChanged()">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>p</mat-label>
+      <input matInput [ngModel]="location.p | number:'1.4-4'" type="number" (ngModelChange)="location.p=$event"
+             [ngModelOptions]="{updateOn:'blur'}"
+             (ngModelChange)="emitLocationChanged()">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>r</mat-label>
+      <input matInput [ngModel]="location.r | number:'1.4-4'" type="number" (ngModelChange)="location.r=$event"
+             [ngModelOptions]="{updateOn:'blur'}"
+             (ngModelChange)="emitLocationChanged()">
+    </mat-form-field>
+  </div>
+</div>

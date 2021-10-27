@@ -1,0 +1,152 @@
+<div class="wrapper">
+
+  <div class="controls">
+    <div class="section form">
+      <button mat-raised-button color="primary" (click)="load()">Reload</button>
+      <button mat-raised-button color="accent" (click)="save()">Save
+        <span class="shortcut"><span class="button">s</span></span>
+      </button>
+    </div>
+    <div class="section form">
+      <mat-form-field appearance="fill" class="select-field">
+        <mat-label>Scene</mat-label>
+        <mat-select [value]="selectedScene" (selectionChange)="selectScene($event.value)">
+          <mat-option *ngFor="let scene of scenes" [value]="scene">{{scene.id}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="header">
+      <label class="label">Parts</label>
+    </div>
+    <div class="section stretch list-section">
+      <div class="list">
+        <mat-selection-list #scenePartOptions [multiple]="false"
+                            (selectionChange)="selectPositionedPart($event.option.value)">
+          <mat-list-option #scenePartOption *ngFor="let locatedPart of selectedScene?.positionedParts"
+                           [value]="locatedPart" [selected]="locatedPart === selectedPositionedPart" disableRipple>
+            <div class="option">
+              <span class="description">{{locatedPart?.part?.id}}</span>
+              <button mat-icon-button *ngIf="scenePartOption.selected"
+                      (click)="copySelectedPart()" [style]="'margin-right: 12px'">
+                <mat-icon>content_copy</mat-icon>
+                <span class="shortcut"><span class="button">d</span></span>
+              </button>
+              <button mat-icon-button color="warn" *ngIf="scenePartOption.selected"
+                      (click)="removeLocatedPart(locatedPart)">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+      <div class="list-button">
+        <button mat-raised-button color="accent" (click)="addNewLocatedPart()" [disabled]="!selectedScene">
+          <mat-icon>add</mat-icon>
+          <span class="shortcut"><span class="button">n</span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="section form">
+      <div>
+        <span class="shortcut"><span class="button">h</span></span>
+        <span class="shortcut"><span class="button">⇧#</span></span>
+        <span class="shortcut"><span class="button">j</span></span>
+      </div>
+      <mat-form-field appearance="fill" class="select-field">
+        <mat-label>Image</mat-label>
+        <mat-select [value]="selectedImage" (selectionChange)="selectImage($event.value)">
+          <mat-option *ngFor="let image of selectedScene?.images" [value]="image">{{image.id}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="select-field">
+        <mat-label>Part</mat-label>
+        <mat-select [value]="selectedPositionedPart?.part" (selectionChange)="selectPart($event.value)">
+          <mat-option *ngFor="let part of parts" [value]="part">{{part.id}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="header">
+      <label class="label">Pose (world)</label>
+    </div>
+    <div class="section form">
+      <app-pose-offset [location]="absolutePose" (locationChanged)="recalculateRelativePose()"></app-pose-offset>
+    </div>
+    <div class="section form">
+      <app-pose-editor [location]="absolutePose"
+                       (locationChanged)="recalculateRelativePose()"></app-pose-editor>
+    </div>
+  </div>
+
+  <div class="stretch">
+    <mat-tab-group mat-align-tabs="center" (animationDone)="switchedTabs()" animationDuration="0ms">
+      <mat-tab>
+        <ng-template mat-tab-label><span>Overlay<span class="shortcut"><span class="button">a</span></span></span>
+        </ng-template>
+        <div class="wrapper">
+          <div class="stretch">
+            <app-image-render-overlay #overlay [image]="selectedImage" [selectedPositionedPart]="selectedPositionedPart"
+                                      [part]="selectedPositionedPart?.part"
+                                      [pose]="absolutePose" [positionedParts]="selectedScene?.positionedParts"
+                                      (poseChange)="absolutePoseChanged($event)"></app-image-render-overlay>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label><span>Correspondences<span class="shortcut"><span
+          class="button">b</span></span></span></ng-template>
+        <div class="wrapper sub-wrapper">
+          <div class="stretch">
+            <app-pixel-picker #pixelSelector [image]="selectedImage" [correspondences]="correspondences"
+                              [selectedCorrespondence]="selectedCorrespondence"></app-pixel-picker>
+          </div>
+          <div class="stretch">
+
+            <app-point-picker [correspondences]="correspondences"
+                              [selectedCorrespondence]="selectedCorrespondence"
+                              [part]="selectedPositionedPart?.part"></app-point-picker>
+          </div>
+          <div class="controls">
+            <div class="header">
+              <label class="label">Correspondences</label>
+            </div>
+            <div class="section stretch list-section">
+              <div class="list">
+                <mat-selection-list [multiple]="false">
+                  <mat-list-option #aCorrespondence *ngFor="let correspondence of correspondences; index as i"
+                                   [value]="correspondence" [selected]="correspondence === selectedCorrespondence"
+                                   disableRipple (click)="selectCorrespondence(correspondence)">
+                    <div class="option">
+                      <span class="description">{{i}}</span>
+                      <button mat-icon-button color="warn" *ngIf="aCorrespondence.selected"
+                              (click)="removeCorrespondence(correspondence)">
+                        <mat-icon>remove_circle</mat-icon>
+                      </button>
+                    </div>
+                  </mat-list-option>
+                </mat-selection-list>
+              </div>
+              <div class="list-button">
+
+                <button mat-raised-button color="accent" (click)="addNewCorrespondence()" [disabled]="!selectedImage">
+                  <mat-icon>add</mat-icon>
+                  <span class="shortcut"><span class="button">c</span></span>
+                </button>
+              </div>
+            </div>
+            <div class="section form">
+              <button mat-raised-button color="accent" (click)="calculatePoseFromCorrespondences()">
+                <mat-icon>calculate</mat-icon>
+                <span class="shortcut"><span class="button">Enter</span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+
+</div>
