@@ -11,15 +11,15 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {Image} from '../model/image';
+import { Image } from '../model/image';
 import * as THREE from 'three';
-import {TextureLoader} from 'three';
-import {PLYLoader} from 'three/examples/jsm/loaders/PLYLoader';
-import {Pose} from '../model/pose';
+import { TextureLoader } from 'three';
+import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader';
+import { Pose } from '../model/pose';
 import * as panzoom from "panzoom";
-import {TransformControls} from 'three/examples/jsm/controls/TransformControls.js';
-import {Part} from "../model/part";
-import {PositionedPart} from "../model/positioned-part";
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
+import { Part } from "../model/part";
+import { PositionedPart } from "../model/positioned-part";
 
 @Component({
   selector: 'app-image-render-overlay',
@@ -28,7 +28,7 @@ import {PositionedPart} from "../model/positioned-part";
 })
 export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('rendererCanvas', {static: true}) private rendererCanvasRef?: ElementRef<HTMLCanvasElement>;
+  @ViewChild('rendererCanvas', { static: true }) private rendererCanvasRef?: ElementRef<HTMLCanvasElement>;
 
   private renderer?: THREE.WebGLRenderer;
   private scene?: THREE.Scene;
@@ -86,7 +86,7 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, 1, 0.1, 5_000);
     this.scene.add(this.camera);
-    this.scene.add(new THREE.AmbientLight(0xffffff));
+    this.scene.add(new THREE.AmbientLight(0x333333));
     const directionalLight = new THREE.DirectionalLight(0xffffff);
     this.scene.add(directionalLight);
     const cameraLight = new THREE.PointLight(0xffffff);
@@ -202,13 +202,13 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
       if (positionedPart != this.selectedPositionedPart) {
         const cadPath = positionedPart?.part?.cadPath
         this.loadPart(positionedPart.part, mesh => {
-            if (cadPath == this.positionedParts!![i].part.cadPath) {
-              this.scene?.add(mesh);
-              this.setPose(mesh, positionedPart.pose);
-              this.partsMeshes.push(mesh);
-              this.render();
-            }
-          }, this.colors[i], this.otherPartsOpacity
+          if (cadPath == this.positionedParts!![i].part.cadPath) {
+            this.scene?.add(mesh);
+            this.setPose(mesh, positionedPart.pose);
+            this.partsMeshes.push(mesh);
+            this.render();
+          }
+        }, this.colors[i], this.otherPartsOpacity
         );
       }
     }));

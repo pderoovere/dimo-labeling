@@ -127,7 +127,7 @@ export class PointPickerComponent implements OnInit, OnChanges, OnDestroy {
 
   private setupLights(): void {
     // ambient
-    const ambient = new THREE.AmbientLight(0xffffff);
+    const ambient = new THREE.AmbientLight(0x222222);
     this.scene!!.add(ambient);
     // directional 2
     const directional = new THREE.DirectionalLight(0xffffff);
