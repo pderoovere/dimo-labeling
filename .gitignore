@@ -179,3 +179,4 @@ dmypy.json
 cython_debug/
 
 .history/
+*.log.*
