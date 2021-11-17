@@ -39,7 +39,7 @@ class DatasetLoader:
         return [self.load_scene(parts, main_path, scene_path) for scene_path in sorted(path.glob('[!.]*'))]
 
     def load_scene(self, parts, main_path, path):
-        scene_id = int(path.name)
+        scene_id = path.name
         with open(path / 'scene_gt.json') as f_gt, open(path / 'scene_camera.json') as f_cam:
             images_gt = json.load(f_gt)
             images_cam = json.load(f_cam)
@@ -63,7 +63,7 @@ class DatasetLoader:
             raise Exception(f'Cannot find image {image_id} in {path}')
         image = Image.open(image_path)
         K = self.load_camera_pose(image_cam['cam_K'])
-        camera_pose = self.load_pose(image_cam['cam_R_w2c'], image_cam['cam_t_w2c'])
+        camera_pose = self.load_pose(image_cam['cam_R_c2w'], image_cam['cam_t_c2w'])
         return {
             'id': image_id,
             'path': str(f'/api/cdn/{image_path.relative_to(main_path)}'),
@@ -78,17 +78,17 @@ class DatasetLoader:
             logging.info('loading parts w.r.t world')
             with open(path / 'scene_gt_world.json') as f_positioned_parts:
                 positioned_parts_gt = json.load(f_positioned_parts)
-                positioned_parts = [self.load_positioned_part(parts, positioned_part_gt) for positioned_part_gt in
+                positioned_parts = [self.load_positioned_part(parts, positioned_part_gt, 'cam_R_m2w', 'cam_t_m2w') for positioned_part_gt in
                                     positioned_parts_gt]
         else:
             logging.info('loading parts w.r.t camera')
-            positioned_parts = [self.load_positioned_part(parts, image_part_gt) for image_part_gt in image_gt]
+            positioned_parts = [self.load_positioned_part(parts, image_part_gt, 'cam_R_m2c', 'cam_t_m2c') for image_part_gt in image_gt]
             self.convert_positioned_parts_from_camera_to_world(positioned_parts, images[0]['cameraPose'])
         return positioned_parts
 
-    def load_positioned_part(self, parts, image_part_gt):
+    def load_positioned_part(self, parts, image_part_gt, key_R, key_t):
         part_id = int(image_part_gt['obj_id'])
-        pose = self.load_pose(image_part_gt['cam_R_m2c'], image_part_gt['cam_t_m2c'])
+        pose = self.load_pose(image_part_gt[key_R], image_part_gt[key_t])
         return {
             'part': parts[part_id],
             'pose': pose
