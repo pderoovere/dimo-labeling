@@ -22,11 +22,13 @@ The labeling tool consists of two parts:
 * Open a terminal and navigate to the `backend` folder: `cd backend`.
 * Create a new environment: `conda env create -f environment.yml`.
 * Activate the environment: `conda activate dimo-labeling`.
-* Start the back-end api and pass the path to the dataset folder: `python backend/api.py --path "<path-to-dataset>"`.
+* Start the back-end api and pass the path to the dataset folder: `python api.py --path "<path-to-dataset>"`.
 
 ### Front-end
 * Make sure [nodejs](https://nodejs.org/en/download/) is installed.
+* Make sure [nvm](https://github.com/nvm-sh/nvm) is installed.
 * Open a terminal and navigate to the `frontend` folder: `cd frontend`.
+* Activate the environment: `nvm use`.
 * Install the necessary node packages: `npm install`.
 * Build and serve the app: `ng serve`.
 * Open a browser on `http://localhost:4200/` to open the app.
