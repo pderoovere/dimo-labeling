@@ -14,7 +14,7 @@ class DatasetLoader:
         parts = dict(
             (part_id, self.load_part(path, parts_path, part_id)) for part_id in part_ids
         )
-        scenes = self.load_scenes(parts, path, path / args.images_dir)
+        scenes = self.load_scenes(parts, path, path / args.images_dir, args.mode)
         ds = {"scenes": scenes, "parts": list(parts.values())}
         return ds
 
@@ -38,13 +38,13 @@ class DatasetLoader:
             )
         return result
 
-    def load_scenes(self, parts, main_path, path):
+    def load_scenes(self, parts, main_path, path, mode):
         return [
             self.load_scene(parts, main_path, scene_path)
             for scene_path in sorted(path.glob("[!.]*"))
         ]
 
-    def load_scene(self, parts, main_path, path):
+    def load_scene(self, parts, main_path, path, mode):
         scene_id = path.name
         with open(path / "scene_gt.json") as f_gt, open(
             path / "scene_camera.json"
@@ -52,7 +52,7 @@ class DatasetLoader:
             images_gt = json.load(f_gt)
             images_cam = json.load(f_cam)
             images = [
-                self.load_image(main_path, path, image_id, images_cam[image_id])
+                self.load_image(main_path, path, image_id, images_cam[image_id], mode)
                 for image_id in images_gt
             ]
             positioned_parts = self.load_positioned_parts(
@@ -64,7 +64,7 @@ class DatasetLoader:
                 "positionedParts": positioned_parts,
             }
 
-    def load_image(self, main_path, path, image_id, image_cam):
+    def load_image(self, main_path, path, image_id, image_cam, mode):
         if (path / "rgb").exists():
             image_path = path / "rgb" / f"{int(image_id):06d}.png"
         elif (path / "gray").exists():
@@ -74,8 +74,10 @@ class DatasetLoader:
         else:
             raise Exception(f"Cannot find image {image_id} in {path}")
         image = Image.open(image_path)
-        K = self.load_camera_pose(image_cam["cam_K"])
+        K = self.load_intrinsics(image_cam["cam_K"])
         camera_pose = self.load_inv_pose(image_cam["cam_R_w2c"], image_cam["cam_t_w2c"])
+        if mode == "dimo":
+            camera_pose = self.load_pose(image_cam["cam_R_m2c"], image_cam["cam_t_m2c"])
         return {
             "id": image_id,
             "path": str(f"/api/cdn/{image_path.relative_to(main_path)}"),
@@ -123,7 +125,7 @@ class DatasetLoader:
             )
             positioned_part["pose"] = self.pose_to_list(pose)
 
-    def load_camera_pose(self, K):
+    def load_intrinsics(self, K):
         K = np.reshape(K, (3, 3))
         return K.flatten(order="F").tolist()
 
@@ -153,6 +155,12 @@ class DatasetLoader:
 
     @staticmethod
     def add_to_argparse(parser):
-        parser.add_argument("--models_dir", type=str, default=r"models")
-        parser.add_argument("--images_dir", type=str, default=r"real_jaigo")
+        parser.add_argument(
+            "--models_dir",
+            type=str,
+            default=r"models",
+            description="Name of the directory (relative to the dataset path) where the models are stored.",
+        )
+        parser.add_argument("--images_dir", type=str, default=r"real_jaigo", description="Name of the directory (relative to the dataset path) where scenes are stored."
+        parser.add_argument("--mode", type=str, default=r"bop", description="Dataset mode, bop = BOP dataset, dimo = DIMO dataset.")
         return parser
