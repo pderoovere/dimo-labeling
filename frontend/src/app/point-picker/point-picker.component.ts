@@ -127,10 +127,10 @@ export class PointPickerComponent implements OnInit, OnChanges, OnDestroy {
 
   private setupLights(): void {
     // ambient
-    const ambient = new THREE.AmbientLight(0x222222);
+    const ambient = new THREE.AmbientLight(0x333333, 5);
     this.scene!!.add(ambient);
     // directional 2
-    const directional = new THREE.DirectionalLight(0xffffff);
+    const directional = new THREE.DirectionalLight(0xffffff, 5);
     directional.position.set(0, 10, 0).normalize();
     this.camera!!.add(directional);
   }
@@ -144,23 +144,25 @@ export class PointPickerComponent implements OnInit, OnChanges, OnDestroy {
     this.removeMesh();
     if (this.part) {
       const cadPath = this.part.cadPath;
+      console.log("Loading", this.part)
       this.plyLoader.load(cadPath, (geometry => {
         if (cadPath == this.part?.cadPath) {
           geometry.computeVertexNormals();
           if (this.part.texturePath) {
             const texturePath = this.part.texturePath
+            console.log("Texture:", texturePath)
             this.textureLoader.load(this.part!!.texturePath, (texture => {
               if (texturePath == this.part?.texturePath) {
                 const material = new THREE.MeshStandardMaterial({
                   map: texture,
-                  metalness: 0.25
+                  metalness: 0.25,
+                  transparent: true,
                 });
                 this.addMesh(geometry, material);
               }
             }));
           } else {
             const material = new THREE.MeshPhongMaterial({
-              //color: 0x007Aff,
               vertexColors: true,
               shininess: 30,
               flatShading: true,

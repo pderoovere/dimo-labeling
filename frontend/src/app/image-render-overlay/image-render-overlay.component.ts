@@ -46,7 +46,7 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
   @Input() pose?: Pose;
 
   selectedPartOpacity: number = 0.5;
-  otherPartsOpacity: number = 0.25;
+  otherPartsOpacity: number = 0.5;
   overrideColor: boolean = false;
   translateControls: boolean = true;
 
@@ -86,10 +86,10 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, 1, 0.1, 5_000);
     this.scene.add(this.camera);
-    this.scene.add(new THREE.AmbientLight(0x333333));
-    const directionalLight = new THREE.DirectionalLight(0xffffff);
-    this.scene.add(directionalLight);
-    const cameraLight = new THREE.PointLight(0xffffff);
+    this.scene.add(new THREE.AmbientLight(0x333333, 10));
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    // this.scene.add(directionalLight);
+    const cameraLight = new THREE.PointLight(0xffffff, 5);
     cameraLight.position.set(1, 1, 0);
     this.camera.add(cameraLight);
     this.setupTransformControls();
@@ -224,10 +224,11 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private loadPart(part: Part, onload: (mesh: THREE.Mesh) => void, defaultColor: number, opacity: number): void {
+    console.log("Loading part: ", part)
     this.plyLoader.load(part.cadPath, (geometry => {
       geometry.computeVertexNormals();
       if (this.part!!.texturePath) {
-        this.textureLoader.load(this.part!!.texturePath, (texture => {
+        this.textureLoader.load(part.texturePath!!, (texture => {
           const material = this.createTextureMaterial(texture, defaultColor, opacity);
           const mesh = new THREE.Mesh(geometry, material);
           onload(mesh);
@@ -254,7 +255,7 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
 
   private createPhongMaterial(defaultColor: number, opacity: number): THREE.Material {
     const vertexColors = !this.overrideColor;
-    const color = this.overrideColor ? defaultColor : undefined;
+    const color = this.overrideColor ? defaultColor : this.selectedColor;
     return new THREE.MeshPhongMaterial({
       color: color,
       vertexColors: vertexColors,
@@ -266,6 +267,7 @@ export class ImageRenderOverlayComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private removeParts(): void {
+    console.log("Removing parts")
     this.partsMeshes.forEach(mesh => {
       this.removeMesh(mesh);
     })

@@ -26,8 +26,10 @@ The labeling tool consists of two parts:
 
 ### Front-end
 * Make sure [nodejs](https://nodejs.org/en/download/) is installed.
+* Make sure [nvm](https://github.com/nvm-sh/nvm) is installed.
 * Open a terminal and navigate to the `frontend` folder: `cd frontend`.
-* Install the necessary node packages: `npm install`.
+* Activate the environment: `nvm use`.
+* Install the necessary node packages: `npm install --save-dev`.
 * Build and serve the app: `ng serve`.
 * Open a browser on `http://localhost:4200/` to open the app.
 

@@ -1,21 +1,22 @@
 <div class="controls">
   <label>Selected alpha</label>
-  <mat-slider min="0" max="1" step="0.1" [(ngModel)]="selectedPartOpacity"
-              (change)="refreshMesh()"></mat-slider>
+  <mat-slider min="0" max="1" step="0.1">
+    <input matSliderThumb [(ngModel)]="selectedPartOpacity" (change)="refreshMesh()">
+  </mat-slider>
   <div class="spacer"></div>
   <label>Other alpha</label>
-  <mat-slider min="0" max="1" step="0.1" [(ngModel)]="otherPartsOpacity"
-              (change)="refreshPositionedParts()"></mat-slider>
+  <mat-slider min="0" max="1" step="0.1">
+    <input matSliderThumb [(ngModel)]="otherPartsOpacity" (change)="refreshPositionedParts()">
+  </mat-slider>
   <div class="spacer"></div>
   <mat-checkbox (change)="refreshAllParts()" [(ngModel)]="overrideColor">Override colors</mat-checkbox>
   <div class="spacer"></div>
   <mat-button-toggle-group>
-    <mat-button-toggle [checked]="translateControls" (click)="translationControls()">Translation <span class="shortcut"><span
-      class="button">t</span></span>
+    <mat-button-toggle [checked]="translateControls" (click)="translationControls()">Translation <span
+        class="shortcut"><span class="button">t</span></span>
     </mat-button-toggle>
     <mat-button-toggle [checked]="!translateControls" (click)="orientationsControls()">Orientation <span
-      class="shortcut"><span
-      class="button">o</span></span>
+        class="shortcut"><span class="button">o</span></span>
     </mat-button-toggle>
   </mat-button-toggle-group>
 </div>

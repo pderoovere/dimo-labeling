@@ -37,6 +37,9 @@
             ],
             "scripts": [
               "./node_modules/panzoom/dist/panzoom.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "lodash"
             ]
           },
           "configurations": {
