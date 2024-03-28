@@ -192,6 +192,9 @@ export class AppComponent {
   }
 
   switchedTabs(): void {
+    if (this.pixelPicker == undefined || this.pointPicker == undefined) {
+      return;
+    }
     this.pixelPicker!!.resize();
     this.pointPicker!!.resize();
   }

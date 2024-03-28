@@ -46,6 +46,9 @@ export class CanvasViewerComponent implements OnInit, AfterViewInit {
   }
 
   resize(): void {
+    if (!this.canvas) {
+      return;
+    }
     this.canvas!!.width = this.canvas!!.getBoundingClientRect().width;
     this.canvas!!.height = this.canvas!!.getBoundingClientRect().height;
     this.redraw();

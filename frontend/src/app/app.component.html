@@ -21,18 +21,19 @@
     <div class="section stretch list-section">
       <div class="list">
         <mat-selection-list #scenePartOptions [multiple]="false"
-                            (selectionChange)="selectPositionedPart($event.option.value)">
+          (selectionChange)="selectPositionedPart($event.options[0].value)">
           <mat-list-option #scenePartOption *ngFor="let locatedPart of selectedScene?.positionedParts"
-                           [value]="locatedPart" [selected]="locatedPart === selectedPositionedPart" disableRipple>
+            [value]="locatedPart" [selected]="locatedPart === selectedPositionedPart" disableRipple
+            [id]="locatedPart?.part?.id">
             <div class="option">
               <span class="description">{{locatedPart?.part?.id}}</span>
-              <button mat-icon-button *ngIf="scenePartOption.selected"
-                      (click)="copySelectedPart()" [style]="'margin-right: 12px'">
+              <button mat-icon-button *ngIf="scenePartOption.selected" (click)="copySelectedPart()"
+                [style]="'margin-right: 12px'">
                 <mat-icon>content_copy</mat-icon>
                 <span class="shortcut"><span class="button">d</span></span>
               </button>
               <button mat-icon-button color="warn" *ngIf="scenePartOption.selected"
-                      (click)="removeLocatedPart(locatedPart)">
+                (click)="removeLocatedPart(locatedPart)">
                 <mat-icon>remove_circle</mat-icon>
               </button>
             </div>
@@ -55,13 +56,13 @@
         <span class="shortcut"><span class="button">⇧#</span></span>
         <span class="shortcut"><span class="button">j</span></span>
       </div>
-      <mat-form-field appearance="fill" class="select-field">
+      <mat-form-field appearance="fill" class="select-field" id="image">
         <mat-label>Image</mat-label>
         <mat-select [value]="selectedImage" (selectionChange)="selectImage($event.value)">
           <mat-option *ngFor="let image of selectedScene?.images" [value]="image">{{image.id}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="fill" class="select-field">
+      <mat-form-field appearance="fill" class="select-field" id="part">
         <mat-label>Part</mat-label>
         <mat-select [value]="selectedPositionedPart?.part" (selectionChange)="selectPart($event.value)">
           <mat-option *ngFor="let part of parts" [value]="part">{{part.id}}</mat-option>
@@ -75,38 +76,36 @@
       <app-pose-offset [location]="absolutePose" (locationChanged)="recalculateRelativePose()"></app-pose-offset>
     </div>
     <div class="section form">
-      <app-pose-editor [location]="absolutePose"
-                       (locationChanged)="recalculateRelativePose()"></app-pose-editor>
+      <app-pose-editor [location]="absolutePose" (locationChanged)="recalculateRelativePose()"></app-pose-editor>
     </div>
   </div>
 
   <div class="stretch">
     <mat-tab-group mat-align-tabs="center" (animationDone)="switchedTabs()" animationDuration="0ms">
-      <mat-tab>
+      <mat-tab class="stretch">
         <ng-template mat-tab-label><span>Overlay<span class="shortcut"><span class="button">a</span></span></span>
         </ng-template>
         <div class="wrapper">
           <div class="stretch">
             <app-image-render-overlay #overlay [image]="selectedImage" [selectedPositionedPart]="selectedPositionedPart"
-                                      [part]="selectedPositionedPart?.part"
-                                      [pose]="absolutePose" [positionedParts]="selectedScene?.positionedParts"
-                                      (poseChange)="absolutePoseChanged($event)"></app-image-render-overlay>
+              [part]="selectedPositionedPart?.part" [pose]="absolutePose"
+              [positionedParts]="selectedScene?.positionedParts"
+              (poseChange)="absolutePoseChanged($event)"></app-image-render-overlay>
           </div>
         </div>
       </mat-tab>
-      <mat-tab>
+      <mat-tab class="stretch">
         <ng-template mat-tab-label><span>Correspondences<span class="shortcut"><span
-          class="button">b</span></span></span></ng-template>
+                class="button">b</span></span></span></ng-template>
         <div class="wrapper sub-wrapper">
           <div class="stretch">
             <app-pixel-picker #pixelSelector [image]="selectedImage" [correspondences]="correspondences"
-                              [selectedCorrespondence]="selectedCorrespondence"></app-pixel-picker>
+              [selectedCorrespondence]="selectedCorrespondence"></app-pixel-picker>
           </div>
           <div class="stretch">
 
-            <app-point-picker [correspondences]="correspondences"
-                              [selectedCorrespondence]="selectedCorrespondence"
-                              [part]="selectedPositionedPart?.part"></app-point-picker>
+            <app-point-picker [correspondences]="correspondences" [selectedCorrespondence]="selectedCorrespondence"
+              [part]="selectedPositionedPart?.part"></app-point-picker>
           </div>
           <div class="controls">
             <div class="header">
@@ -116,12 +115,12 @@
               <div class="list">
                 <mat-selection-list [multiple]="false">
                   <mat-list-option #aCorrespondence *ngFor="let correspondence of correspondences; index as i"
-                                   [value]="correspondence" [selected]="correspondence === selectedCorrespondence"
-                                   disableRipple (click)="selectCorrespondence(correspondence)">
+                    [value]="correspondence" [selected]="correspondence === selectedCorrespondence" disableRipple
+                    (click)="selectCorrespondence(correspondence)">
                     <div class="option">
                       <span class="description">{{i}}</span>
                       <button mat-icon-button color="warn" *ngIf="aCorrespondence.selected"
-                              (click)="removeCorrespondence(correspondence)">
+                        (click)="removeCorrespondence(correspondence)">
                         <mat-icon>remove_circle</mat-icon>
                       </button>
                     </div>
