@@ -40,7 +40,7 @@ class DatasetLoader:
 
     def load_scenes(self, parts, main_path, path, mode):
         return [
-            self.load_scene(parts, main_path, scene_path)
+            self.load_scene(parts, main_path, scene_path, mode)
             for scene_path in sorted(path.glob("[!.]*"))
         ]
 
@@ -159,8 +159,18 @@ class DatasetLoader:
             "--models_dir",
             type=str,
             default=r"models",
-            description="Name of the directory (relative to the dataset path) where the models are stored.",
+            help="Name of the directory (relative to the dataset path) where the models are stored.",
         )
-        parser.add_argument("--images_dir", type=str, default=r"real_jaigo", description="Name of the directory (relative to the dataset path) where scenes are stored."
-        parser.add_argument("--mode", type=str, default=r"bop", description="Dataset mode, bop = BOP dataset, dimo = DIMO dataset.")
+        parser.add_argument(
+            "--images_dir",
+            type=str,
+            default=r"real_jaigo",
+            help="Name of the directory (relative to the dataset path) where scenes are stored.",
+        )
+        parser.add_argument(
+            "--mode",
+            type=str,
+            default=r"bop",
+            help="Dataset mode, bop = BOP dataset, dimo = DIMO dataset.",
+        )
         return parser
