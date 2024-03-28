@@ -180,3 +180,5 @@ cython_debug/
 
 .history/
 *.log.*
+
+.angular/
