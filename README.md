@@ -22,7 +22,7 @@ The labeling tool consists of two parts:
 * Open a terminal and navigate to the `backend` folder: `cd backend`.
 * Create a new environment: `conda env create -f environment.yml`.
 * Activate the environment: `conda activate dimo-labeling`.
-* Start the back-end api and pass the path to the dataset folder: `python api.py --path "<path-to-dataset>"`.
+* Start the back-end api and pass the path to the dataset folder, the name of the folder containing object models and the name of the camera containing scenes: `python backend/api.py --path "<path-to-dataset>" --models_dir "<models-dir-name>" --images_dir "<camera-dir-name>"`.
 
 ### Front-end
 * Make sure [nodejs](https://nodejs.org/en/download/) is installed.
